@@ -1,0 +1,9 @@
+dash==2.3.1
+dash-mantine-components==0.10.2
+dash-iconify==0.1.2
+pandas
+python-dotenv==0.20.0
+numpy
+rebound
+reboundx
+
