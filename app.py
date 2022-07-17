@@ -32,7 +32,34 @@ app.layout = dmc.MantineProvider(
                                     class_name="card",
                                     children=[
                                         ## Simulation selection
-                                        comp.controls(),
+                                        html.Div(
+                                            [
+                                                "Select the rotation angle in the x-y plane for the velocity vector at flyby (degrees)",
+                                                dcc.Dropdown(
+                                                    id="zangle",
+                                                    options=data_utils.get_options(
+                                                        "vi_angle"
+                                                    ),
+                                                    value=0,
+                                                ),
+                                            ]
+                                        ),
+                                        html.Div(
+                                            [
+                                                "Select the mass of Apophis (solar masses)",
+                                                dcc.Dropdown(
+                                                    id="a_mass",
+                                                    options=data_utils.get_options(
+                                                        "Apophis_mass"
+                                                    ),
+                                                    value=min(
+                                                        data_utils.get_options(
+                                                            "Apophis_mass"
+                                                        )
+                                                    ),
+                                                ),
+                                            ]
+                                        ),
                                         ## USER TEXT INFO 1
                                         dmc.Col(
                                             dmc.LoadingOverlay(
@@ -61,7 +88,6 @@ app.layout = dmc.MantineProvider(
                                             dcc.Graph(
                                                 id="dist-fig",
                                                 className="glow",
-                                                config={"displayModeBar": False},
                                             ),
                                             overlayOpacity=0.95,
                                             overlayColor="#1D2022",
@@ -83,7 +109,6 @@ app.layout = dmc.MantineProvider(
                                             dcc.Graph(
                                                 id="orbit-fig",
                                                 className="glow",
-                                                config={"displayModeBar": False},
                                             ),
                                             overlayOpacity=0.95,
                                             overlayColor="#1D2022",
@@ -105,7 +130,6 @@ app.layout = dmc.MantineProvider(
                                             dcc.Graph(
                                                 id="dist-diff-fig",
                                                 className="glow",
-                                                config={"displayModeBar": False},
                                             ),
                                             overlayOpacity=0.95,
                                             overlayColor="#1D2022",
@@ -138,19 +162,21 @@ app.layout = dmc.MantineProvider(
     Output("sat-sim-deets", "children"),
     Output("dist-fig", "figure"),
     Output("orbit-fig", "figure"),
-    Output("dist-diff-fig"),
+    Output("dist-diff-fig", "figure"),
     Input("zangle", "value"),
     Input("a_mass", "value"),
 )
 def make_page(zangle, a_mass):
+    dfdist = data_utils.clean_data("sat_sim_dist.csv", "distance")
+    dfspatial = data_utils.clean_data("sat_sim_spatial.csv", "spatial")
     info = dmc.Text(
         f"Below are graphs of the distance from each of the satellites to Apophis over time and the 3D orbital path over the course of a few months. These are made using simulations where the mass of Apophis was {a_mass} kg and the angle of the satellite velocity vector was rotated in the x-y plane by {zangle} degrees from Apophis' velocity vector at the time of the closest flyby."
     )
-    dist_df = data_utils.dist_time(zangle, a_mass)
+    dist_df = data_utils.dist_time(dfdist, zangle, a_mass)
     dist_fig = figures.dist_fig(dist_df)
     dist_diff_fig = figures.dist_diff_fig(dist_df)
     df_orbit_Earth, df_orbit_Ast, df_orbit_Sat1, df_orbit_Sat2 = data_utils.orbit_path(
-        zangle, a_mass
+        dfspatial, zangle, a_mass
     )
     orbit_fig = figures.orbital_fig(
         df_orbit_Earth, df_orbit_Ast, df_orbit_Sat1, df_orbit_Sat2

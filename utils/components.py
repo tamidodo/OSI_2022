@@ -5,25 +5,6 @@ from dash_iconify import DashIconify
 from utils import data_utils
 
 
-def generate_usercomp(df, user, fitness):
-    useridx = df.index[df["user_id"] == int(user)].to_list()[0]
-    num_pat = len(df)
-    if useridx == 0:
-        usercomp = dmc.Text(
-            f"Of the {num_pat} patients in the study, Patient {user} had the lowest total {fitness.lower()}"
-        )
-    elif useridx == num_pat - 1:
-        usercomp = dmc.Text(
-            f"Of the {num_pat} patients in the study, Patient {user} had the highest total {fitness.lower()}"
-        )
-    else:
-        percentile = round((useridx + 1) / num_pat * 100, 2)
-        usercomp = dmc.Text(
-            f"Patient  had higher total {fitness.lower()} than {percentile}% of the {num_pat} patients in the study"
-        )
-    return usercomp
-
-
 def header(app, header_color, subheader=None, header_background_color="transparent"):
 
     logo = html.Img(src=app.get_asset_url("images/osi_logo.png"))
@@ -54,19 +35,3 @@ def header(app, header_color, subheader=None, header_background_color="transpare
         className="header",
         style={"background-color": header_background_color},
     )
-
-
-def controls():
-    zangle = dmc.Select(
-        id="zangle",
-        label="Select the rotation angle in the x-y plane for the velocity vector at flyby (degrees)",
-        data=data_utils.get_options("vi_angle"),
-        value=0,
-    )
-    mass = dmc.Select(
-        id="a_mass",
-        label="Select the mass of Apophis (kg)",
-        data=data_utils.get_options("Apophis_mass"),
-        value=min(data_utils.get_options("Apophis_mass")),
-    )
-    return zangle, mass

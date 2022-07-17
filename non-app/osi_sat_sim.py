@@ -628,14 +628,12 @@ for amass in apophis_masses:
             # We always move to the center of momentum frame before an integration
 
             year = 2.0 * np.pi  # One year in units where G=1
-            times = np.linspace(0.0, year * tsimend, Noutputs)
-            dtout = dtout * 2 * np.pi
-            """x = np.zeros((Nbod, Noutputs))
-            y = np.zeros((Nbod, Noutputs))
-            z = np.zeros((Nbod, Noutputs))
-            vx = np.zeros((Nbod, Noutputs))
-            vy = np.zeros((Nbod, Noutputs))
-            vz = np.zeros((Nbod, Noutputs))"""
+            if dt < 0:
+                times = np.linspace(0.0, -year * tsimend, Noutputs)
+                dtout = -dtout * 2 * np.pi
+            else:
+                times = np.linspace(0.0, year * tsimend, Noutputs)
+                dtout = dtout * 2 * np.pi
             x = np.zeros((4, Noutputs))
             y = np.zeros((4, Noutputs))
             z = np.zeros((4, Noutputs))
@@ -676,22 +674,6 @@ for amass in apophis_masses:
                     vx[ind][i] = ps[p].vx
                     vy[ind][i] = ps[p].vy
                     vz[ind][i] = ps[p].vz
-                """for p in range(len(ps)):
-                    x[p][i] = ps[p].x
-                    y[p][i] = ps[p].y
-                    z[p][i] = ps[p].z
-                    vx[p][i] = ps[p].vx
-                    vy[p][i] = ps[p].vy
-                    vz[p][i] = ps[p].vz"""
-
-            distanceearth = (
-                np.sqrt(
-                    np.square(x[0] - x[1])
-                    + np.square(y[0] - y[1])
-                    + np.square(z[0] - z[1])
-                )
-                * aukm
-            )
 
             distancesat1 = (
                 np.sqrt(

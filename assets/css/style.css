@@ -98,23 +98,11 @@ body {
     flex-grow: 4;
     margin-left: 3vh;
 }
-.header-logos-right > img {
-    float: left;
-}
 
 
 .header-text-middle {
     flex-grow: 4;
-    text-align: center;
-}
-
-
-.header-logos-right {
-    flex-grow: 4;
-}
-.header-logos-right > img {
-    float: right;
-    margin-right: 3vh;
+    text-align: left;
 }
 
 .description {
