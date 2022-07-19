@@ -23,7 +23,7 @@ app.layout = dmc.MantineProvider(
             [
                 dmc.Grid(
                     justify="center",
-                    gutter="xl",
+                    gutter="xs",
                     children=[
                         dmc.Col(
                             span=10,
@@ -32,33 +32,39 @@ app.layout = dmc.MantineProvider(
                                     class_name="card",
                                     children=[
                                         ## Simulation selection
-                                        html.Div(
-                                            [
-                                                "Select the rotation angle in the x-y plane for the velocity vector at flyby (degrees)",
-                                                dcc.Dropdown(
-                                                    id="zangle",
-                                                    options=data_utils.get_options(
-                                                        "vi_angle"
+                                        dmc.Col(
+                                            html.Div(
+                                                [
+                                                    "Select the rotation angle in the x-y plane for the velocity vector at flyby (degrees)",
+                                                    dcc.Dropdown(
+                                                        id="zangle",
+                                                        options=data_utils.get_options(
+                                                            "vi_angle"
+                                                        ),
+                                                        value=0,
                                                     ),
-                                                    value=0,
-                                                ),
-                                            ]
+                                                ]
+                                            ),
+                                            span=12,
                                         ),
-                                        html.Div(
-                                            [
-                                                "Select the mass of Apophis (solar masses)",
-                                                dcc.Dropdown(
-                                                    id="a_mass",
-                                                    options=data_utils.get_options(
-                                                        "Apophis_mass"
-                                                    ),
-                                                    value=min(
-                                                        data_utils.get_options(
+                                        dmc.Col(
+                                            html.Div(
+                                                [
+                                                    "Select the mass of Apophis (solar masses)",
+                                                    dcc.Dropdown(
+                                                        id="a_mass",
+                                                        options=data_utils.get_options(
                                                             "Apophis_mass"
-                                                        )
+                                                        ),
+                                                        value=min(
+                                                            data_utils.get_options(
+                                                                "Apophis_mass"
+                                                            )
+                                                        ),
                                                     ),
-                                                ),
-                                            ]
+                                                ]
+                                            ),
+                                            span=12,
                                         ),
                                         ## USER TEXT INFO 1
                                         dmc.Col(
@@ -69,17 +75,17 @@ app.layout = dmc.MantineProvider(
                                                 loaderProps=dict(
                                                     color="orange", variant="dots"
                                                 ),
-                                                class_name="user-demo-border",
+                                                # class_name="user-demo-border",
                                             ),
-                                            span=10,
+                                            span=12,
                                         ),
                                     ],
                                 ),
                             ],
                         ),
-                        ## 3 FIGURES
+                        ## 4 FIGURES
                         dmc.Col(
-                            span=6,
+                            span=4,
                             children=[
                                 html.Div(
                                     className="card",
@@ -100,7 +106,7 @@ app.layout = dmc.MantineProvider(
                             ],
                         ),
                         dmc.Col(
-                            span=6,
+                            span=4,
                             children=[
                                 html.Div(
                                     className="card",
@@ -108,6 +114,27 @@ app.layout = dmc.MantineProvider(
                                         dmc.LoadingOverlay(
                                             dcc.Graph(
                                                 id="dist-diff-fig",
+                                                className="glow",
+                                            ),
+                                            overlayOpacity=0.95,
+                                            overlayColor="#1D2022",
+                                            loaderProps=dict(
+                                                color="orange", variant="bars"
+                                            ),
+                                        ),
+                                    ],
+                                ),
+                            ],
+                        ),
+                        dmc.Col(
+                            span=4,
+                            children=[
+                                html.Div(
+                                    className="card",
+                                    children=[
+                                        dmc.LoadingOverlay(
+                                            dcc.Graph(
+                                                id="diff-btwn-fig",
                                                 className="glow",
                                             ),
                                             overlayOpacity=0.95,
@@ -162,6 +189,7 @@ app.layout = dmc.MantineProvider(
     Output("sat-sim-deets", "children"),
     Output("dist-fig", "figure"),
     Output("orbit-fig", "figure"),
+    Output("diff-btwn-fig", "figure"),
     Output("dist-diff-fig", "figure"),
     Input("zangle", "value"),
     Input("a_mass", "value"),
@@ -175,13 +203,18 @@ def make_page(zangle, a_mass):
     dist_df = data_utils.dist_time(dfdist, zangle, a_mass)
     dist_fig = figures.dist_fig(dist_df)
     dist_diff_fig = figures.dist_diff_fig(dist_df)
-    df_orbit_Earth, df_orbit_Ast, df_orbit_Sat1, df_orbit_Sat2 = data_utils.orbit_path(
-        dfspatial, zangle, a_mass
-    )
+    (
+        df_orbit_Earth,
+        df_orbit_Ast,
+        df_orbit_Sat1,
+        df_orbit_Sat2,
+        df_dist_btwn,
+    ) = data_utils.orbit_path(dfspatial, zangle, a_mass)
     orbit_fig = figures.orbital_fig(
         df_orbit_Earth, df_orbit_Ast, df_orbit_Sat1, df_orbit_Sat2
     )
-    return (info, dist_fig, orbit_fig, dist_diff_fig)
+    dist_btwn_fig = figures.diff_btwn_fig(df_dist_btwn)
+    return (info, dist_fig, orbit_fig, dist_diff_fig, dist_btwn_fig)
 
 
 if __name__ == "__main__":

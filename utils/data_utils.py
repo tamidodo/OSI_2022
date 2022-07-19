@@ -39,8 +39,8 @@ def dist_time(df, zangle, a_mass):
     Takes a rotation angle and mass for Apophis as input
     Returns the dataframe to make the distance/time graph
     """
-    times_f = np.linspace(0, 0.17, 100)
-    times_b = np.linspace(0, -0.17, 100)
+    times_f = np.linspace(0, 0.17 * 365.25, 100)
+    times_b = np.linspace(0, -0.17 * 365.25, 100)
     times = np.concatenate((times_f, times_b))
     subset = (df["vi_angle"] == zangle) & (df["Apophis_mass"] == a_mass)
     df_dist = df[(subset)]
@@ -62,7 +62,6 @@ def dist_time(df, zangle, a_mass):
     df_dist = pd.concat([df1, df2], axis=1)
     df_dist["diff"] = df_dist["dist2"] - df_dist["dist1"]
     df_dist["times"] = times
-    print(df_dist.iloc[100:120, :])
     return df_dist
 
 
@@ -79,4 +78,17 @@ def orbit_path(df, zangle, a_mass):
     df_orbit_Ast = df_orbit.iloc[:, 1::4]
     df_orbit_Sat1 = df_orbit.iloc[:, 2::4]
     df_orbit_Sat2 = df_orbit.iloc[:, 3::4]
-    return df_orbit_Earth, df_orbit_Ast, df_orbit_Sat1, df_orbit_Sat2
+    df_dist_btwn = (
+        np.sqrt(
+            np.square(df_orbit_Sat2["x"] - df_orbit_Sat1["x"])
+            + np.square(df_orbit_Sat2["y"] - df_orbit_Sat1["y"])
+            + np.square(df_orbit_Sat2["z"] - df_orbit_Sat1["z"])
+        )
+        * 1.496e8
+    )
+    df_dist_btwn = df_dist_btwn.to_frame(name="dist_btwn")
+    times_f = np.linspace(0, 0.17 * 365.25, 100)
+    times_b = np.linspace(0, -0.17 * 365.25, 100)
+    times = np.concatenate((times_f, times_b))
+    df_dist_btwn["times"] = times
+    return df_orbit_Earth, df_orbit_Ast, df_orbit_Sat1, df_orbit_Sat2, df_dist_btwn

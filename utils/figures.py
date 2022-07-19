@@ -78,8 +78,8 @@ def dist_fig(df_dist):
             name="Distance to Satellite 2",
         )
     )
-    fig.update_layout(title="Distance from Apophis over time")
-    fig.update_xaxes(title_text="Sim Time (years)")
+    fig.update_layout(title="Distance from Apophis over time", legend_y=1, legend_x=0)
+    fig.update_xaxes(title_text="Sim Time (days)", range=[0, 0.17 * 365.25])
     fig.update_yaxes(title_text="Distance (km)")
     return fig_style(fig)
 
@@ -95,7 +95,24 @@ def dist_diff_fig(df_dist):
             name="Difference in distance",
         )
     )
-    fig.update_layout(title="Difference in distance from Apophis between satellites")
-    fig.update_xaxes(title_text="Sim Time (years)")
+    fig.update_layout(title="Difference in distance to Apophis")
+    fig.update_xaxes(title_text="Sim Time (days)", range=[0, 0.17 * 365.25])
+    fig.update_yaxes(title_text="Difference in distance (km)")
+    return fig_style(fig)
+
+
+def diff_btwn_fig(df_btwn):
+    fig = go.Figure()
+    fig.add_trace(
+        go.Scatter(
+            x=df_btwn["times"],
+            y=df_btwn["dist_btwn"],
+            mode="markers",
+            marker=dict(size=3),
+            name="Distance between satellites",
+        )
+    )
+    fig.update_layout(title="Distance between satellites over time")
+    fig.update_xaxes(title_text="Sim Time (days)", range=[0, 0.17 * 365.25])
     fig.update_yaxes(title_text="Difference in distance (km)")
     return fig_style(fig)
