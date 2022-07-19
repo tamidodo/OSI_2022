@@ -107,7 +107,7 @@ app.layout = dmc.MantineProvider(
                                     children=[
                                         dmc.LoadingOverlay(
                                             dcc.Graph(
-                                                id="orbit-fig",
+                                                id="dist-diff-fig",
                                                 className="glow",
                                             ),
                                             overlayOpacity=0.95,
@@ -128,7 +128,7 @@ app.layout = dmc.MantineProvider(
                                     children=[
                                         dmc.LoadingOverlay(
                                             dcc.Graph(
-                                                id="dist-diff-fig",
+                                                id="orbit-fig",
                                                 className="glow",
                                             ),
                                             overlayOpacity=0.95,

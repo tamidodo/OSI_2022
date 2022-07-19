@@ -54,6 +54,7 @@ def orbital_fig(df_Earth, df_Ast, df_Sat1, df_Sat2):
             name="Satellite 2",
         )
     )
+    fig.update_layout(legend_title_text="Objects", title="Orbital Path")
     return fig_style(fig)
 
 
@@ -77,6 +78,9 @@ def dist_fig(df_dist):
             name="Distance to Satellite 2",
         )
     )
+    fig.update_layout(title="Distance from Apophis over time")
+    fig.update_xaxes(title_text="Sim Time (years)")
+    fig.update_yaxes(title_text="Distance (km)")
     return fig_style(fig)
 
 
@@ -91,4 +95,7 @@ def dist_diff_fig(df_dist):
             name="Difference in distance",
         )
     )
+    fig.update_layout(title="Difference in distance from Apophis between satellites")
+    fig.update_xaxes(title_text="Sim Time (years)")
+    fig.update_yaxes(title_text="Difference in distance (km)")
     return fig_style(fig)
