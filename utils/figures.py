@@ -13,6 +13,7 @@ def fig_style(fig):
 
 
 def orbital_fig(df_Earth, df_Ast, df_Sat1, df_Sat2):
+    """Returns figure of orbital paths for Earth, Apophis, Sat1 and Sat2"""
     fig = go.Figure()
     fig.add_trace(
         go.Scatter3d(
@@ -59,6 +60,7 @@ def orbital_fig(df_Earth, df_Ast, df_Sat1, df_Sat2):
 
 
 def dist_fig(df_dist):
+    """Returns figure showing the distances of the Satellites from Apophis over time"""
     fig = go.Figure()
     fig.add_trace(
         go.Scatter(
@@ -85,11 +87,12 @@ def dist_fig(df_dist):
 
 
 def dist_diff_fig(df_dist):
+    """Returns the figure showing the difference in distance to Apophis between the two Satellites"""
     fig = go.Figure()
     fig.add_trace(
         go.Scatter(
             x=df_dist["times"],
-            y=df_dist["diff"],
+            y=df_dist["distdiff"],
             mode="markers",
             marker=dict(size=3),
             name="Difference in distance",
@@ -101,12 +104,13 @@ def dist_diff_fig(df_dist):
     return fig_style(fig)
 
 
-def diff_btwn_fig(df_btwn):
+def diff_btwn_fig(df_dist):
+    """Returns the figure showing the distance between the satellites over time"""
     fig = go.Figure()
     fig.add_trace(
         go.Scatter(
-            x=df_btwn["times"],
-            y=df_btwn["dist_btwn"],
+            x=df_dist["times"],
+            y=df_dist["distbtwnsats"],
             mode="markers",
             marker=dict(size=3),
             name="Distance between satellites",

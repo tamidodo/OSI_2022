@@ -41,7 +41,7 @@ app.layout = dmc.MantineProvider(
                                                         options=data_utils.get_options(
                                                             "vi_angle"
                                                         ),
-                                                        value=0,
+                                                        value=-10,
                                                     ),
                                                 ]
                                             ),
@@ -195,25 +195,23 @@ app.layout = dmc.MantineProvider(
     Input("a_mass", "value"),
 )
 def make_page(zangle, a_mass):
-    dfdist = data_utils.clean_data("sat_sim_dist.csv", "distance")
-    dfspatial = data_utils.clean_data("sat_sim_spatial.csv", "spatial")
     info = dmc.Text(
         f"Below are graphs of the distance from each of the satellites to Apophis over time and the 3D orbital path over the course of a few months. These are made using simulations where the mass of Apophis was {a_mass} kg and the angle of the satellite velocity vector was rotated in the x-y plane by {zangle} degrees from Apophis' velocity vector at the time of the closest flyby."
     )
-    dist_df = data_utils.dist_time(dfdist, zangle, a_mass)
+    dist_df = data_utils.dist_time(zangle, a_mass)
     dist_fig = figures.dist_fig(dist_df)
     dist_diff_fig = figures.dist_diff_fig(dist_df)
+    dist_btwn_fig = figures.diff_btwn_fig(dist_df)
     (
         df_orbit_Earth,
         df_orbit_Ast,
         df_orbit_Sat1,
         df_orbit_Sat2,
-        df_dist_btwn,
-    ) = data_utils.orbit_path(dfspatial, zangle, a_mass)
+        df_times,
+    ) = data_utils.orbit_path(zangle, a_mass)
     orbit_fig = figures.orbital_fig(
         df_orbit_Earth, df_orbit_Ast, df_orbit_Sat1, df_orbit_Sat2
     )
-    dist_btwn_fig = figures.diff_btwn_fig(df_dist_btwn)
     return (info, dist_fig, orbit_fig, dist_diff_fig, dist_btwn_fig)
 
 
