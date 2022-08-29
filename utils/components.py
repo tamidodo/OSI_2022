@@ -5,7 +5,7 @@ from dash_iconify import DashIconify
 from utils import data_utils
 
 
-def header(app, header_color, subheader=None, header_background_color="transparent"):
+def header(app, subheader=None, header_background_color="transparent"):
 
     logo = html.Img(src=app.get_asset_url("images/osi_logo.png"))
     osi_logo = html.A(
@@ -19,14 +19,12 @@ def header(app, header_color, subheader=None, header_background_color="transpare
         [
             html.Div(
                 [
-                    html.Div("OSI", style={"color": "#7976F7"}),
-                    html.Div(" Satellite Simulations ", style={"padding": "0px 15px"}),
+                    html.Div("OSI Satellite Simulations", style={"color": "#2B3956"}),
                 ],
                 className="header-title",
             ),
             html.Div(subheader, className="subheader-title"),
         ],
-        style={"color": header_color},
         className="header-text-middle",
     )
 

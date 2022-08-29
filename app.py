@@ -10,13 +10,12 @@ server = app.server
 
 app.layout = dmc.MantineProvider(
     withGlobalStyles=True,
-    theme={"colorScheme": "dark"},
+    theme={"colorScheme": "light"},
     children=[
         ## Header and app description
         comp.header(
             app,
-            "#FFFFFF",
-            header_background_color="#111014",
+            header_background_color="#FFFFFF",
         ),
         ## Content
         html.Div(
@@ -148,16 +147,19 @@ app.layout = dmc.MantineProvider(
                             ],
                         ),
                         dmc.Col(
-                            span=10,
+                            span=11,
                             children=[
                                 html.Div(
                                     className="card",
+                                    style={"height": "900px"},
                                     children=[
                                         dmc.LoadingOverlay(
                                             dcc.Graph(
                                                 id="orbit-fig",
                                                 className="glow",
+                                                style={"height": "900px"},
                                             ),
+                                            style={"height": "900px"},
                                             overlayOpacity=0.95,
                                             overlayColor="#1D2022",
                                             loaderProps=dict(

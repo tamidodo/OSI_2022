@@ -1,37 +1,10 @@
-
-/* ******** */
-/* left-tab */
-/* ******** */
-
-.left-tab .global-control {
-    padding: 2vh 0;
-}
-
-
-/* ********* */
-/* right tab */
-/* ********* */
-
-.user-demo-border {
-    border-right: 2px solid #DB4C39;
-    line-height: 2px;
-}
-
-#user-header {
-    padding-top: 2vh;
-}
-
-#user-id {
-    width: 100% !important;
-}
-
 /* *************** */
 /* Global settings */
 /* *************** */
 
 body {
     margin: 0 !important;
-    background-color: #15171B;
+    background-color: #ffffff;
 }
 
 /* tab body left-right padding */
@@ -41,7 +14,7 @@ body {
 
 
 .card {
-    background-color: #1C1C20;
+    background-color: #d1d1d1;
     border-radius: 5px;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     margin: 15px;
@@ -52,14 +25,14 @@ body {
 }
 
 .mantine-SegmentedControl-active {
-    background-color: #a92f1f !important;
+    background-color: #6d81b4 !important;
 }
 .rc-slider-track {
     
-    background-color: #a92f1f !important;
+    background-color: #6d81b4 !important;
 }
 .rc-slider-handle, .rc-slider-dot-active  {
-    border-color: #ED8537 !important;
+    border-color: #635170 !important;
 }
 
 /* remove background from notification icon */
@@ -110,7 +83,7 @@ body {
     padding-bottom: 3vh;
 }
 .description h3 {
-    color: #DB4C39;
+    color: #6d81b4;
 }
 
 /* ********* */
@@ -132,7 +105,7 @@ body {
 
 .glow:before {
     content: '';
-    background: linear-gradient(145deg, #ff2c6d , #7fe4ff, #ff2c6d , #7fe4ff, #ff2c6d , #7fe4ff, #ff2c6d , #7fe4ff, #ff2c6d , #7fe4ff);
+    background: linear-gradient(145deg, #aeaeae , #d5a4ff, #aeaeae , #d5a4ff, #aeaeae , #d5a4ff, #aeaeae , #d5a4ff, #aeaeae , #d5a4ff);
     position: absolute;
     top: -2px;
     left:-2px;
@@ -300,24 +273,4 @@ body {
 /* Patient selector control */
 .mantine-SegmentedControl-root {
     overflow-x: auto;
-}
-
-/* Scrollbar */
-
-::-webkit-scrollbar {
-    width: 20px;
-}
-
-::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 5px #ED8537; 
-    border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb {
-    background: #2f3445; 
-    border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: #474f68; 
 }

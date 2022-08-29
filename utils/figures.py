@@ -5,10 +5,13 @@ import plotly.graph_objects as go
 def fig_style(fig):
     return (
         fig.update_layout(
-            paper_bgcolor="#1c2022", plot_bgcolor="#1c2022", font_color="#A3AAB7"
+            paper_bgcolor="#d1d1d1",
+            plot_bgcolor="#d1d1d1",
+            font_color="#2B3956",
+            legend_bgcolor="#ffffff",
         )
-        .update_xaxes(gridcolor="#3F3F3F")
-        .update_yaxes(gridcolor="#3F3F3F")
+        .update_xaxes(gridcolor="#ffffff")
+        .update_yaxes(gridcolor="#ffffff")
     )
 
 
@@ -21,7 +24,7 @@ def orbital_fig(df_Earth, df_Ast, df_Sat1, df_Sat2):
             y=df_Earth["y"],
             z=df_Earth["z"],
             mode="markers",
-            marker=dict(size=3),
+            marker=dict(size=3, color="#0948BA"),
             name="Earth",
         )
     )
@@ -31,7 +34,7 @@ def orbital_fig(df_Earth, df_Ast, df_Sat1, df_Sat2):
             y=df_Ast["y"],
             z=df_Ast["z"],
             mode="markers",
-            marker=dict(size=3),
+            marker=dict(size=3, color="#E6391A"),
             name="Apophis",
         )
     )
@@ -41,7 +44,7 @@ def orbital_fig(df_Earth, df_Ast, df_Sat1, df_Sat2):
             y=df_Sat1["y"],
             z=df_Sat1["z"],
             mode="markers",
-            marker=dict(size=3),
+            marker=dict(size=3, color="#ad9176"),
             name="Satellite 1",
         )
     )
@@ -51,11 +54,15 @@ def orbital_fig(df_Earth, df_Ast, df_Sat1, df_Sat2):
             y=df_Sat2["y"],
             z=df_Sat2["z"],
             mode="markers",
-            marker=dict(size=3),
+            marker=dict(size=3, color="#635170"),
             name="Satellite 2",
         )
     )
-    fig.update_layout(legend_title_text="Objects", title="Orbital Path")
+    fig.update_layout(
+        legend_title_text="Objects",
+        title="Orbital Path",
+        legend=dict(yanchor="top", y=0.99, xanchor="left", x=0.01, orientation="h"),
+    )
     return fig_style(fig)
 
 
@@ -67,7 +74,7 @@ def dist_fig(df_dist):
             x=df_dist["times"],
             y=df_dist["dist1"],
             mode="markers",
-            marker=dict(size=3),
+            marker=dict(size=3, color="#ad9176"),
             name="Distance to Satellite 1",
         )
     )
@@ -76,7 +83,7 @@ def dist_fig(df_dist):
             x=df_dist["times"],
             y=df_dist["dist2"],
             mode="markers",
-            marker=dict(size=3),
+            marker=dict(size=3, color="#635170"),
             name="Distance to Satellite 2",
         )
     )
@@ -94,7 +101,7 @@ def dist_diff_fig(df_dist):
             x=df_dist["times"],
             y=df_dist["distdiff"],
             mode="markers",
-            marker=dict(size=3),
+            marker=dict(size=3, color="#635170"),
             name="Difference in distance",
         )
     )
@@ -112,7 +119,7 @@ def diff_btwn_fig(df_dist):
             x=df_dist["times"],
             y=df_dist["distbtwnsats"],
             mode="markers",
-            marker=dict(size=3),
+            marker=dict(size=3, color="#635170"),
             name="Distance between satellites",
         )
     )
