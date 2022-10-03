@@ -50,12 +50,9 @@ vyangle = -5 * twopi / 360
 dtfine = 5 * sec2code
 
 # Parameter loop lists:
-# apophis_masses = np.linspace(2.2127565415e-20, 3.1179751266e-20, 10)
-# vzangles = np.linspace(-16, -10, 7)
-# ball_speeds = np.linspace(0, 2, 10)
-apophis_masses = [2.2127565415e-20]
-vzangles = [-12]
-ball_speeds = [1]
+apophis_masses = np.linspace(2.2127565415e-20, 3.1179751266e-20, 10)
+vzangles = np.linspace(-16, -10, 7)
+ball_speeds = np.linspace(0, 2, 10)
 
 
 masteroid = [
@@ -576,7 +573,7 @@ for amass in apophis_masses:
             Lball_delta = bspeed * (
                 s_a_diff
                 / np.sqrt(
-                    np.sqaure(s_a_diff[0])
+                    np.square(s_a_diff[0])
                     + np.square(s_a_diff[1])
                     + np.square(s_a_diff[2])
                 )
@@ -585,9 +582,9 @@ for amass in apophis_masses:
 
             sim.add(
                 m=0.0,
-                x=xs_init,
-                y=ys_init,
-                z=zs_init,
+                x=xs_init + 6e-14,
+                y=ys_init + 6e-14,
+                z=zs_init + 6e-14,
                 vx=vxs_init + Lball_delta[0],
                 vy=vys_init + Lball_delta[1],
                 vz=vzs_init + Lball_delta[2],
@@ -596,9 +593,9 @@ for amass in apophis_masses:
 
             sim.add(
                 m=0.0,
-                x=xs_init,
-                y=ys_init,
-                z=zs_init,
+                x=xs_init - 6e-14,
+                y=ys_init - 6e-14,
+                z=zs_init - 6e-14,
                 vx=vxs_init + Rball_delta[0],
                 vy=vys_init + Rball_delta[1],
                 vz=vzs_init + Rball_delta[2],
@@ -631,7 +628,7 @@ for amass in apophis_masses:
             p = ps[idAst]
             p1 = ps[idSat]
             p2 = ps[idLBall]
-            p3 = pd[idRBall]
+            p3 = ps[idRBall]
             print(
                 "sim.add(m={}, x={}, y={}, z={}, vx={}, vy={}, vz={}, A2={} hash='{}')".format(
                     p.m, p.x, p.y, p.z, p.vx, p.vy, p.vz, A2PARAM, names[idAst]
@@ -726,26 +723,26 @@ for amass in apophis_masses:
                     vz[ind][i] = ps[p].vz
 
             dfx = pd.DataFrame(x)
-            dfx[["rowtype", "vi_angle", "Apophis_mass", "ball_speed"]] = (
-                "x",
+            dfx[["vi_angle", "Apophis_mass", "ball_speed"]] = (
                 zangle,
                 amass,
                 bspeed,
             )
+            dfx["rowtype"] = ["xEarth", "xApophis", "xLBall", "xRBall"]
             dfy = pd.DataFrame(y)
-            dfy[["rowtype", "vi_angle", "Apophis_mass", "ball_speed"]] = (
-                "y",
+            dfy[["vi_angle", "Apophis_mass", "ball_speed"]] = (
                 zangle,
                 amass,
                 bspeed,
             )
+            dfy["rowtype"] = ["yEarth", "yApophis", "yLBall", "yRBall"]
             dfz = pd.DataFrame(z)
-            dfz[["rowtype", "vi_angle", "Apophis_mass", "ball_speed"]] = (
-                "z",
+            dfz[["vi_angle", "Apophis_mass", "ball_speed"]] = (
                 zangle,
                 amass,
                 bspeed,
             )
+            dfz["rowtype"] = ["zEarth", "zApophis", "zLBall", "zRBall"]
             result = pd.concat([result, dfx, dfy, dfz])
 
 
