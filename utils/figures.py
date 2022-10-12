@@ -1,5 +1,5 @@
-import plotly.express as px
 import plotly.graph_objects as go
+from plotly.validators import DataValidator
 
 
 def fig_style(fig):
@@ -13,6 +13,67 @@ def fig_style(fig):
         .update_xaxes(gridcolor="#ffffff")
         .update_yaxes(gridcolor="#ffffff")
     )
+
+
+def ball_traj_fig(df_traj):
+    """Returns figure of trajectories for Earth, Apophis, Satellite, Spheres"""
+    fig = go.Figure()
+    fig.add_trace(
+        go.Scatter3d(
+            x=df_traj["xEarth"],
+            y=df_traj["yEarth"],
+            z=df_traj["zEarth"],
+            mode="markers",
+            marker=dict(size=3, color="#0948BA"),
+            name="Earth",
+        )
+    )
+    fig.add_trace(
+        go.Scatter3d(
+            x=df_traj["xApophis"],
+            y=df_traj["yApophis"],
+            z=df_traj["zApophis"],
+            mode="markers",
+            marker=dict(size=3, color="#E6391A"),
+            name="Apophis",
+        )
+    )
+    fig.add_trace(
+        go.Scatter3d(
+            x=df_traj["xSat"],
+            y=df_traj["ySat"],
+            z=df_traj["zSat"],
+            mode="markers",
+            marker=dict(size=3, color="#ad9176"),
+            name="Satellite",
+        )
+    )
+    fig.add_trace(
+        go.Scatter3d(
+            x=df_traj["xLBall"],
+            y=df_traj["yLBall"],
+            z=df_traj["zLBall"],
+            mode="markers",
+            marker=dict(size=3, color="#635170"),
+            name="Sphere Towards",
+        )
+    )
+    fig.add_trace(
+        go.Scatter3d(
+            x=df_traj["xRBall"],
+            y=df_traj["yRBall"],
+            z=df_traj["zRBall"],
+            mode="markers",
+            marker=dict(size=3, color="#E6D1FF"),
+            name="Sphere Away",
+        )
+    )
+    fig.update_layout(
+        legend_title_text="Objects",
+        title="Trajectory",
+        legend=dict(yanchor="top", y=0.99, xanchor="left", x=0.01, orientation="h"),
+    )
+    return fig_style(fig)
 
 
 def orbital_fig(df_Earth, df_Ast, df_Sat1, df_Sat2):

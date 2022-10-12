@@ -2,15 +2,35 @@ import numpy as np
 import pandas as pd
 
 df = pd.read_csv("osi_sat_sim_results_closer.csv")
+dfball = pd.read_csv("osi_ball_sim_results.csv")
 
 
-def get_options(option_type):
+def get_options(option_type, ball=False):
     """
     Takes one of 'vi_angle', 'Apophis_mass' as input
     Returns the unique options for the parameter
     """
-    df_options = df[option_type].unique().tolist()
+    if ball:
+        df_options = dfball[option_type].unique().tolist()
+    else:
+        df_options = df[option_type].unique().tolist()
     return df_options
+
+
+def ball_paths(zangle, a_mass, ball_speed):
+    """
+    Takes a rotation angle, mass for Apophis and relative speed of the balls as input
+    Returns the dataframe to make the ball trajectory graphs
+    """
+    subset = (
+        (dfball["vi_angle"] == zangle)
+        & (dfball["Apophis_mass"] == a_mass)
+        & (dfball["ball_speed"] == ball_speed)
+    )
+    df_traj = dfball[(subset)]
+    df_traj = df_traj.drop(columns=["vi_angle", "Apophis_mass", "ball_speed"])
+    df_traj = df_traj.set_index("rowtype").T
+    return df_traj
 
 
 def dist_time(zangle, a_mass):
