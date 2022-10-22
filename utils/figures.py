@@ -76,6 +76,10 @@ def ball_traj_fig(df_traj):
     return fig_style(fig)
 
 
+def ball_diff_fig(df_traj):
+    return
+
+
 def orbital_fig(df_Earth, df_Ast, df_Sat1, df_Sat2):
     """Returns figure of orbital paths for Earth, Apophis, Sat1 and Sat2"""
     fig = go.Figure()

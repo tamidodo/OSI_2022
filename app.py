@@ -365,6 +365,7 @@ def make_ball_sat_page(zangle, a_mass, b_speed):
     )
     df_traj = data_utils.ball_paths(zangle, a_mass, b_speed)
     traj_fig = figures.ball_traj_fig(df_traj)
+    data_utils.ball_dists(df_traj)
     return (info, traj_fig)
 
 

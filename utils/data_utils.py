@@ -33,6 +33,22 @@ def ball_paths(zangle, a_mass, ball_speed):
     return df_traj
 
 
+def ball_dists(df_traj):
+    distLBall = np.sqrt(
+        np.square(df_traj["xLBall"] - df_traj["xSat"])
+        + np.square(df_traj["yLBall"] - df_traj["ySat"])
+        + np.square(df_traj["zLBall"] - df_traj["zSat"])
+    )
+    distRBall = np.sqrt(
+        np.square(df_traj["xRBall"] - df_traj["xSat"])
+        + np.square(df_traj["yRBall"] - df_traj["ySat"])
+        + np.square(df_traj["zRBall"] - df_traj["zSat"])
+    )
+    print("left", distLBall)
+    print("right", distRBall)
+    return
+
+
 def dist_time(zangle, a_mass):
     """
     Takes a rotation angle and mass for Apophis as input

@@ -41,18 +41,18 @@ J4 = -1.620e-6
 
 dmin = 4.326e-5  # Earth radius in au
 
-tsimend = 0.17  # endtime in years
-dtout = 0.17  # end time in years
-Noutputs = 200
+tsimend = 0.003  # endtime in years
+dtout = 0.003  # end time in years
+Noutputs = 4000
 TMAX = -2.3e9
 result = pd.DataFrame()
 vyangle = -5 * twopi / 360
 dtfine = 5 * sec2code
 
 # Parameter loop lists:
-apophis_masses = np.linspace(2.2127565415e-20, 3.1179751266e-20, 10)
-vzangles = np.linspace(-16, -10, 7)
-ball_speeds = np.linspace(0, 2, 10)
+apophis_masses = np.linspace(2.2127565415e-20, 3.1179751266e-20, 5)
+vzangles = np.linspace(-12, -10, 3)
+ball_speeds = np.linspace(0.169, 0.25, 8)
 
 
 masteroid = [
@@ -135,10 +135,13 @@ idLBall = -2
 idRBall = -1
 idlist = [idEarth, idAst, idSat, idLBall, idRBall]
 
-d1 = 2  # distance from the first satellite to Apophis in km
-xa_init = -1.053424570585645  # distance in AU
-ya_init = -0.08044494637064198  # distance in AU
-za_init = -0.02060117615275531  # distance in AU
+xa_init = -1.0534237925726595  # distance in AU
+ya_init = -0.06561407123575298  # distance in AU
+za_init = -0.050897085780635294  # distance in AU
+
+xs_init = -1.0534237098880042
+ys_init = -0.06561406242218194
+zs_init = -0.05089708178773614
 vxa_init = (
     0.003081033035886182 * 365.175 / (2 * np.pi)
 )  # velocity in AU/year divided by 2pi to match the code
@@ -150,7 +153,6 @@ vza_init = (
 )  # velocity in AU/year divided by 2pi to match the code
 magv_init = np.sqrt(vxa_init**2 + vya_init**2 + vza_init**2)
 
-scale1 = 1 + d1 / (149597871 * np.sqrt(xa_init**2 + ya_init**2 + za_init**2))
 vscale = (magv_init * 149597871 / (60 * 60 * 24) + 6.4) / (
     magv_init * 149597871 / (60 * 60 * 24)
 )
@@ -548,10 +550,6 @@ for amass in apophis_masses:
 
             satv = rotateZ([vxa_init, vya_init, vza_init], zangle * twopi / 360)
             satv = rotateY(satv, vyangle)
-
-            xs_init = xa_init * scale1
-            ys_init = ya_init * scale1
-            zs_init = za_init * scale1
             vxs_init = satv[0] * vscale
             vys_init = satv[1] * vscale
             vzs_init = satv[2] * vscale
@@ -567,15 +565,23 @@ for amass in apophis_masses:
                 hash="Sat",
             )
 
+            # To get the direction of ball velocity, need to take the cross product of the
+            # vector that points from the asteroid to the satellite with the velocity vector
+            # of the satellite to get the normal vector to the plane containing both Apophis,
+            # the satellite and the satellite's velocity vector. The cross product of the
+            # satellite's velocity vector and the vector normal to the plane give the ball's velocity vector
             s_a_diff = np.array(
                 [xa_init - xs_init, ya_init - ys_init, za_init - zs_init]
             )
+            v_sat_dir = np.array([vxs_init, vys_init, vzs_init])
+            perp_plane = np.cross(v_sat_dir, s_a_diff)
+            left_dir = np.cross(perp_plane, v_sat_dir)
             Lball_delta = bspeed * (
-                s_a_diff
+                left_dir
                 / np.sqrt(
-                    np.square(s_a_diff[0])
-                    + np.square(s_a_diff[1])
-                    + np.square(s_a_diff[2])
+                    np.square(left_dir[0])
+                    + np.square(left_dir[1])
+                    + np.square(left_dir[2])
                 )
             )
             Rball_delta = -1 * Lball_delta
@@ -735,14 +741,14 @@ for amass in apophis_masses:
                 amass,
                 bspeed,
             )
-            dfy["rowtype"] = ["yEarth", "yApophis", "xSat", "yLBall", "yRBall"]
+            dfy["rowtype"] = ["yEarth", "yApophis", "ySat", "yLBall", "yRBall"]
             dfz = pd.DataFrame(z)
             dfz[["vi_angle", "Apophis_mass", "ball_speed"]] = (
                 zangle,
                 amass,
                 bspeed,
             )
-            dfz["rowtype"] = ["zEarth", "zApophis", "xSat", "zLBall", "zRBall"]
+            dfz["rowtype"] = ["zEarth", "zApophis", "zSat", "zLBall", "zRBall"]
             result = pd.concat([result, dfx, dfy, dfz])
 
 
